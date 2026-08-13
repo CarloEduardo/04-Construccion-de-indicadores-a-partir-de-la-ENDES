@@ -1,99 +1,59 @@
-# Construcción de indicadores a partir de la ENDES <a id='a'></a>
+# Construcción de indicadores de Desarrollo Infantil Temprano a partir de la ENDES <a id='a'></a>
 
-Este proyecto en **Stata** contiene un conjunto de scripts para el procesamiento y análisis de los microdatos de la **Encuesta Nacional de Hogares (ENAHO)** del Perú, elaborada por el **Instituto Nacional de Estadística e Informática (INEI)**. Su objetivo principal es construir indicadores socioeconómicos a partir de los microdatos de la encuesta y replicar resultados publicados en informes oficiales del INEI.
+Este proyecto en **Stata** contiene scripts para el procesamiento y análisis de los microdatos de la **Encuesta Demográfica y de Salud Familiar (ENDES)**, elaborada por el **Instituto Nacional de Estadística e Informática (INEI)**.
 
-Actualmente, el proyecto contiene dos scripts principales, orientados a reproducir indicadores correspondientes a los siguientes informes:
+El objetivo del proyecto es reproducir, a partir de los microdatos de la **ENDES 2019**, indicadores publicados en el documento **“DESARROLLO INFANTIL TEMPRANO en niñas y niños menores de 6 años de edad - ENDES, 2019”**.
 
-1. **Evolución de la Pobreza Monetaria, 2008-2019**
-2. **Evolución de los Indicadores de Empleo e Ingresos por Departamento, 2007-2019**
+La replicación utiliza las bases correspondientes a los distintos cuestionarios y módulos de la ENDES requeridos para construir los indicadores de Desarrollo Infantil Temprano (DIT). Los scripts organizan, procesan y combinan estas fuentes de información, generan las variables necesarias y permiten contrastar los resultados obtenidos con los publicados por el INEI.
 
-El primer script utiliza principalmente la información del módulo **Sumaria** de la ENAHO para construir indicadores relacionados con las condiciones de vida y la pobreza monetaria, entre ellos el gasto e ingreso real per cápita, la incidencia de la pobreza, la brecha de pobreza y la severidad de la pobreza.
-
-El segundo script está orientado a la construcción de indicadores del **mercado laboral e ingresos**, permitiendo reproducir resultados a nivel nacional y departamental relacionados con participación laboral, empleo, desempleo, características de la población ocupada e ingresos provenientes del trabajo.
-
-Los scripts procesan información de múltiples años de la ENAHO, estandarizan las variables necesarias para construir series de tiempo comparables y generan resultados considerando los factores de expansión y las desagregaciones geográficas utilizadas por el INEI.
-
-> **Importante:** este proyecto **no descarga directamente los microdatos de la ENAHO**. Antes de ejecutar los scripts de construcción de indicadores se debe ejecutar previamente el proyecto [**01-Web-Scraping-ENAHO-2004-2025**](https://github.com/CarloEduardo/01-Web-Scraping-ENAHO-2004-2025), ya que de ese repositorio se obtiene la estructura de carpetas y las bases de datos utilizadas como insumo en este proyecto.
-
-Con el propósito de garantizar la **reproducibilidad, trazabilidad y mantenimiento** del proyecto, el código se gestiona mediante **Git** y se encuentra alojado en **GitHub**, facilitando el control de versiones, la documentación de los cambios y la incorporación progresiva de nuevos indicadores e informes.
+Con el propósito de garantizar la **reproducibilidad, trazabilidad y mantenimiento** del proyecto, el código se gestiona mediante **Git** y se encuentra alojado en **GitHub**, facilitando el control de versiones, la documentación de los cambios y la incorporación progresiva de nuevos indicadores.
 
 ## Contenido
 
 1. [Descripción del proyecto](#1)<br>
-2. [Requisito previo: descarga de la ENAHO](#2)<br>
+2. [Fuente de información](#2)<br>
 3. [Requisitos](#3)<br>
 4. [Instalación y configuración](#4)<br>
 5. [Estructura del proyecto](#5)<br>
-6. [Informes replicados](#6)<br>
-   6.1. [Evolución de la Pobreza Monetaria, 2008-2019](#6_1)<br>
-   6.2. [Evolución de los Indicadores de Empleo e Ingresos por Departamento, 2007-2019](#6_2)<br>
-7. [Metodología general](#7)<br>
-8. [Ejecución](#8)<br>
-9. [Resultados](#9)<br>
-10. [Observaciones](#10)<br>
+6. [Documento replicado](#6)<br>
+7. [Bases y cuestionarios utilizados](#7)<br>
+8. [Metodología general](#8)<br>
+9. [Ejecución](#9)<br>
+10. [Resultados](#10)<br>
+11. [Observaciones](#11)<br>
 
 ___
 
 ## 1. Descripción del proyecto <a id='1'></a>
 
-El proyecto busca reproducir indicadores oficiales del INEI a partir de los microdatos de la ENAHO mediante scripts desarrollados en **Stata**.
+El proyecto busca reproducir indicadores oficiales de **Desarrollo Infantil Temprano (DIT)** publicados por el INEI utilizando los microdatos de la **ENDES 2019** y scripts desarrollados en **Stata**.
 
-El flujo de trabajo se divide en dos etapas:
+El flujo de trabajo comprende la organización de las bases de datos de la ENDES, la selección de las variables requeridas, el procesamiento y combinación de los diferentes módulos, la construcción de los indicadores y la comparación de los resultados con los valores publicados en el documento oficial.
 
-1. **Descarga y organización de los microdatos de la ENAHO.** Esta etapa se realiza mediante un proyecto independiente.
-2. **Procesamiento de las bases y construcción de indicadores.** Esta etapa corresponde al presente repositorio.
+La organización modular del proyecto permite conservar separadas las bases de datos, los scripts de procesamiento y los resultados generados, facilitando la revisión y reproducción del análisis.
 
-La separación entre ambas etapas permite mantener un flujo de trabajo modular y reproducible: los microdatos se descargan una sola vez y posteriormente pueden reutilizarse para diferentes ejercicios de análisis y replicación.
+## 2. Fuente de información 📥 <a id='2'></a>
 
-## 2. Requisito previo: descarga de la ENAHO 📥 <a id='2'></a>
+La principal fuente de información es la **Encuesta Demográfica y de Salud Familiar (ENDES) 2019** del Instituto Nacional de Estadística e Informática (INEI).
 
-Antes de ejecutar este proyecto es necesario descargar y organizar los microdatos de la ENAHO utilizando el siguiente repositorio:
+Para ejecutar los scripts es necesario disponer localmente de los archivos de microdatos de la ENDES 2019 utilizados en la construcción de los indicadores.
 
-[**01-Web-Scraping-ENAHO-2004-2025**](https://github.com/CarloEduardo/01-Web-Scraping-ENAHO-2004-2025)
+Las bases originales pueden encontrarse en formato SPSS (`.sav`) y son procesadas mediante Stata para generar archivos (`.dta`) utilizados en las etapas posteriores del proyecto.
 
-Clonar el repositorio:
-
-```bash
-git clone https://github.com/CarloEduardo/01-Web-Scraping-ENAHO-2004-2025.git
-```
-
-Luego, ejecutar el script de descarga siguiendo las instrucciones de su `README.md`.
-
-Este proyecto previo descarga los módulos de la ENAHO desde los servidores oficiales del INEI y los organiza por año y módulo. La estructura generada constituye la **fuente de datos de entrada** para los scripts de este repositorio.
-
-Por ejemplo, la estructura esperada es similar a:
-
-```text
-01-Web-Scraping-ENAHO-2004-2025/
-│
-└── Dataset/
-    │
-    ├── 2007/
-    │   └── ...
-    ├── 2008/
-    │   └── ...
-    ├── 2009/
-    │   └── ...
-    ├── ...
-    └── 2019/
-        └── ...
-```
-
-Por lo tanto, **no es necesario volver a descargar las bases desde este proyecto**. Los scripts leen directamente los archivos `.dta` generados y organizados por `01-Web-Scraping-ENAHO-2004-2025`.
+El proyecto trabaja con información proveniente de diferentes cuestionarios de la ENDES debido a que la construcción de los indicadores de Desarrollo Infantil Temprano requiere variables correspondientes al hogar, la vivienda, las mujeres, niñas y niños y otros componentes de la encuesta.
 
 ## 3. Requisitos ⚙️ <a id='3'></a>
 
 Para ejecutar este proyecto se requiere:
 
 - **Stata 16** o superior.
-- Haber ejecutado previamente el proyecto [**01-Web-Scraping-ENAHO-2004-2025**](https://github.com/CarloEduardo/01-Web-Scraping-ENAHO-2004-2025).
-- Tener disponibles localmente los microdatos de la ENAHO requeridos por los scripts.
-- Permisos de lectura y escritura en los directorios del proyecto.
-- **Git** (opcional), para clonar y actualizar los repositorios.
+- Tener disponibles localmente los microdatos requeridos de la **ENDES 2019**.
+- Permisos de lectura y escritura en los directorios utilizados por el proyecto.
+- **Git** (opcional), para clonar, versionar y actualizar el repositorio.
 
 ## 4. Instalación y configuración 🚀 <a id='4'></a>
 
-### 4.1. Clonar este repositorio
+### 4.1. Clonar el repositorio
 
 Abrir una terminal o Git Bash y ejecutar:
 
@@ -109,166 +69,173 @@ cd "E:\07. GitHub\03-Construccion-de-indicadores-a-partir-de-la-ENAHO"
 
 ### 4.2. Configurar las rutas
 
-Antes de ejecutar los scripts, modificar la ruta global utilizada para localizar el proyecto de descarga de la ENAHO.
+Antes de ejecutar los scripts, se deben modificar las rutas globales para que correspondan a la ubicación de los microdatos y del proyecto en la computadora del usuario.
 
 Por ejemplo:
 
 ```stata
-global Path "E:\07. GitHub\01-Web-Scraping-ENAHO-2004-2025"
+global Path    "E:\01. DataBase\01. INEI\02. ENDES"
+global Dataset "E:\07. GitHub\03-Construccion-de-indicadores-a-partir-de-la-ENAHO\01. DESARROLLO INFANTIL TEMPRANO en niñas y niños menores de 6 años de edad - ENDES, 2019"
 ```
 
-A partir de esta ruta, los scripts acceden a las bases organizadas por año y módulo.
-
-Si la ubicación de los repositorios es diferente en otra computadora, únicamente se debe actualizar esta ruta antes de ejecutar el código.
+Si las carpetas se encuentran en otra ubicación, únicamente deben actualizarse estas rutas antes de ejecutar los scripts.
 
 ## 5. Estructura del proyecto 📂 <a id='5'></a>
 
-La estructura general del proyecto es la siguiente:
+Para la replicación del documento de Desarrollo Infantil Temprano, la información se organiza de acuerdo con los diferentes componentes de la ENDES utilizados durante el procesamiento.
+
+Una estructura de referencia es:
 
 ```text
-03-Construccion-de-indicadores-a-partir-de-la-ENAHO/
+01. DESARROLLO INFANTIL TEMPRANO en niñas y niños menores de 6 años de edad - ENDES, 2019/
 │
-├── scripts/
-│   ├── 01_Evolucion_Pobreza_Monetaria_2008_2019.do
-│   └── 02_Indicadores_Empleo_Ingresos_2007_2019.do
-│
-├── outputs/
-│   └── ...
+├── 01. Caracteristicas del Hogar/
+├── 02. Caracteristicas de la Vivienda/
+├── 03. Programas Sociales/
+├── 04. Datos Basicos de MEF/
+├── 05. Historia de Nacimiento - Tabla de Conocimiento de Metodo/
+├── 06. Embarazo, Parto, Puerperio y Lactancia/
+├── 07. Inmunizacion y Salud/
+├── 08. Nupcialidad - Fecundidad - Conyugue y Mujer/
+├── 09. Conocimiento de Sida y uso del condon/
+├── 10. Mortalidad Materna - Violencia Familiar/
+├── 11. Peso y talla - Anemia/
+├── 12. Disciplina Infantil/
+├── 13. Encuesta de salud/
 │
 ├── README.md
 └── LICENSE
 ```
 
-> Los nombres exactos de las carpetas y archivos pueden variar según la versión del repositorio. Los scripts deben conservar una referencia válida hacia el directorio donde se encuentran los microdatos descargados mediante el proyecto `01-Web-Scraping-ENAHO-2004-2025`.
+Las carpetas permiten organizar las bases y los procesos asociados con los diferentes cuestionarios y módulos utilizados en la replicación.
 
-## 6. Informes replicados 📊 <a id='6'></a>
+## 6. Documento replicado 📊 <a id='6'></a>
 
-### 6.1. Evolución de la Pobreza Monetaria, 2008-2019 <a id='6_1'></a>
+El proyecto está orientado específicamente a reproducir resultados publicados en:
 
-El primer script replica indicadores publicados en el informe **Evolución de la Pobreza Monetaria, 2008-2019** del INEI.
+**DESARROLLO INFANTIL TEMPRANO en niñas y niños menores de 6 años de edad - ENDES, 2019**
 
-Para ello se utiliza principalmente el módulo **Sumaria** de la ENAHO y se construyen indicadores como:
+La finalidad es reconstruir, utilizando los microdatos de la encuesta, los indicadores incluidos en el documento y disponer de un procedimiento reproducible que permita identificar las variables, filtros, transformaciones y factores de expansión empleados durante su cálculo.
 
-- Gasto real per cápita.
-- Ingreso real per cápita.
-- Incidencia de la pobreza monetaria.
-- Brecha de pobreza — FGT(1).
-- Severidad de la pobreza — FGT(2).
-- Indicadores por ámbito y dominio geográfico.
+## 7. Bases y cuestionarios utilizados 🗂️ <a id='7'></a>
 
-Los resultados se obtienen utilizando los factores de expansión correspondientes y procurando reproducir las definiciones y desagregaciones utilizadas en los cuadros oficiales del INEI.
+El procesamiento considera información organizada en los siguientes componentes:
 
-### 6.2. Evolución de los Indicadores de Empleo e Ingresos por Departamento, 2007-2019 <a id='6_2'></a>
+### Cuestionario del hogar
 
-El segundo script replica indicadores publicados en el informe **Evolución de los Indicadores de Empleo e Ingresos por Departamento, 2007-2019** del INEI.
+1. **Características del Hogar**
+2. **Características de la Vivienda**
+3. **Programas Sociales**
 
-El procesamiento se orienta a la construcción de indicadores relacionados con:
+### Cuestionario individual - Mujeres de 12 a 49 años
 
-- Población en edad de trabajar.
-- Población económicamente activa.
-- Población ocupada.
-- Desempleo.
-- Características de la población ocupada.
-- Ingresos provenientes del trabajo.
-- Resultados a nivel nacional y departamental.
+4. **Datos Básicos de MEF**
+5. **Historia de Nacimiento - Tabla de Conocimiento de Método**
+6. **Embarazo, Parto, Puerperio y Lactancia**
+7. **Inmunización y Salud**
+8. **Nupcialidad - Fecundidad - Cónyuge y Mujer**
+9. **Conocimiento de Sida y uso del condón**
+10. **Mortalidad Materna - Violencia Familiar**
+11. **Peso y talla - Anemia**
+12. **Disciplina Infantil**
 
-## 7. Metodología general <a id='7'></a>
+### Cuestionario de salud
 
-Cada script sigue, de manera general, las siguientes etapas:
+13. **Encuesta de salud**
 
-1. Define las rutas del proyecto y de los microdatos.
-2. Identifica los años requeridos para cada informe.
-3. Carga las bases correspondientes desde el repositorio de descarga de la ENAHO.
-4. Estandariza nombres y formatos de variables cuando existen diferencias entre años.
-5. Une las bases de diferentes años mediante `append` cuando corresponde.
-6. Construye las variables e indicadores necesarios.
-7. Aplica los factores de expansión de la encuesta.
-8. Calcula los indicadores por año y nivel de desagregación geográfica.
-9. Genera tablas que permiten comparar los resultados obtenidos con los cuadros publicados por el INEI.
+Los archivos correspondientes son preparados y transformados a formatos compatibles con Stata para su posterior procesamiento.
+
+## 8. Metodología general <a id='8'></a>
+
+De manera general, los scripts siguen las siguientes etapas:
+
+1. Definición de las rutas de trabajo.
+2. Identificación de los archivos y módulos requeridos de la ENDES 2019.
+3. Importación de las bases originales.
+4. Conversión y almacenamiento de las bases en formato Stata (`.dta`) cuando corresponde.
+5. Revisión y estandarización de variables y etiquetas.
+6. Selección de las variables necesarias para cada indicador.
+7. Combinación de bases mediante identificadores comunes cuando corresponde.
+8. Aplicación de filtros y criterios de población definidos para cada indicador.
+9. Construcción de las variables requeridas.
+10. Aplicación de los factores de expansión correspondientes.
+11. Cálculo de los indicadores de Desarrollo Infantil Temprano.
+12. Comparación de los resultados obtenidos con los valores publicados por el INEI.
 
 El flujo general puede resumirse de la siguiente manera:
 
 ```mermaid
 ---
-title: Flujo general del proyecto
+title: Flujo metodológico del proyecto
 ---
 flowchart TD
 
-A([Inicio]) --> B[Ejecutar 01-Web-Scraping-ENAHO-2004-2025]
-B --> C[Obtener y organizar microdatos ENAHO]
-C --> D[Configurar rutas del proyecto]
-D --> E[Seleccionar informe a replicar]
-E --> F[Cargar módulos y años requeridos]
-F --> G[Estandarizar variables]
-G --> H[Unir bases de diferentes años]
-H --> I[Construir indicadores]
+A([Inicio]) --> B[Configurar rutas]
+B --> C[Identificar bases ENDES 2019]
+C --> D[Importar y preparar microdatos]
+D --> E[Estandarizar variables y etiquetas]
+E --> F[Seleccionar variables requeridas]
+F --> G[Combinar bases]
+G --> H[Definir población y filtros]
+H --> I[Construir variables e indicadores DIT]
 I --> J[Aplicar factores de expansión]
-J --> K[Generar tablas por año y ámbito geográfico]
-K --> L[Comparar con resultados publicados por el INEI]
+J --> K[Generar resultados]
+K --> L[Comparar con publicación del INEI]
 L --> M([Fin])
 ```
 
 *Elaboración propia.*
 
-## 8. Ejecución ▶️ <a id='8'></a>
+## 9. Ejecución ▶️ <a id='9'></a>
 
 El orden recomendado de ejecución es:
 
-### Paso 1. Descargar y organizar la ENAHO
+### Paso 1. Obtener los microdatos de la ENDES 2019
 
-Ejecutar primero el proyecto:
+Descargar y organizar las bases requeridas de la **Encuesta Demográfica y de Salud Familiar (ENDES) 2019**.
 
-```text
-01-Web-Scraping-ENAHO-2004-2025
-```
+### Paso 2. Configurar las rutas
 
-Repositorio:
+Actualizar en los scripts las rutas correspondientes a la ubicación local de las bases y del proyecto.
 
-```text
-https://github.com/CarloEduardo/01-Web-Scraping-ENAHO-2004-2025.git
-```
-
-### Paso 2. Configurar la ruta de los microdatos
-
-En los scripts de este proyecto, actualizar la ruta correspondiente:
+Por ejemplo:
 
 ```stata
-global Path "E:\07. GitHub\01-Web-Scraping-ENAHO-2004-2025"
+global Path "E:\01. DataBase\01. INEI\02. ENDES"
 ```
 
-### Paso 3. Ejecutar el script del informe que se desea replicar
+### Paso 3. Preparar las bases
 
-Para pobreza monetaria:
+Ejecutar los bloques encargados de importar los archivos originales (`.sav`), revisar sus etiquetas y generar las bases de trabajo en formato Stata (`.dta`).
+
+### Paso 4. Ejecutar los scripts de construcción de indicadores
+
+Ejecutar los scripts correspondientes a los indicadores del documento:
 
 ```text
-01-Evolución-de-la-pobreza-monetaria-2008-2019.do
+01-DESARROLLO-INFANTIL-TEMPRANO-en-niñas-y-niños-menores-de-6-años-de-edad-ENDES,-2019
 ```
 
-Para empleo e ingresos:
+### Paso 5. Revisar los resultados
 
-```text
-02-Evolución-de-los-Indicadores-de-Empleo-e-Ingresos-por-Departamento,-2007-2019.do
-```
+Comparar los indicadores obtenidos mediante Stata con los resultados correspondientes publicados por el INEI.
 
-### Paso 4. Revisar los resultados
+## 10. Resultados 📈 <a id='10'></a>
 
-Comparar las tablas generadas por Stata con los cuadros correspondientes de los informes oficiales del INEI.
+La ejecución de los scripts permite reconstruir indicadores de **Desarrollo Infantil Temprano** utilizando directamente los microdatos de la ENDES 2019.
 
-## 9. Resultados 📈 <a id='9'></a>
+El objetivo del proyecto no es reemplazar las estadísticas oficiales publicadas por el INEI, sino documentar de manera reproducible el procedimiento necesario para obtener determinados resultados a partir de los microdatos.
 
-La ejecución de los scripts genera series de indicadores socioeconómicos comparables en el tiempo y organizadas según las desagregaciones utilizadas en los informes oficiales.
+La comparación entre los resultados reproducidos y los publicados permite evaluar la correcta selección de la población de análisis, las variables utilizadas, los filtros aplicados y los factores de expansión.
 
-El objetivo del proyecto no es reemplazar las estadísticas publicadas por el INEI, sino mostrar de manera reproducible cómo pueden construirse determinados indicadores a partir de los microdatos de la ENAHO.
+## 11. Observaciones ⚠️ <a id='11'></a>
 
-Las pequeñas diferencias que eventualmente puedan aparecer respecto de los cuadros oficiales deben evaluarse considerando aspectos como las definiciones metodológicas, factores de expansión, filtros, tratamiento de valores perdidos, deflactores y revisiones realizadas por el INEI.
-
-## 10. Observaciones ⚠️ <a id='10'></a>
-
-- La estructura y los nombres de algunas variables de la ENAHO pueden cambiar entre años.
-- Los scripts incluyen procesos de estandarización para facilitar el análisis longitudinal.
-- La replicación depende de que las bases hayan sido previamente descargadas y organizadas correctamente.
-- No se recomienda modificar manualmente la estructura de carpetas generada por `01-Web-Scraping-ENAHO-2004-2025`, salvo que también se actualicen las rutas utilizadas en los scripts.
-- Los resultados deben interpretarse considerando las definiciones metodológicas utilizadas por el INEI en cada publicación.
+- La construcción de los indicadores depende de la correcta identificación de las bases y variables de la **ENDES 2019**.
+- Un mismo indicador puede requerir información proveniente de diferentes cuestionarios o módulos.
+- Los archivos originales pueden requerir procesos previos de importación, conversión y estandarización antes de ser utilizados.
+- Las bases generadas durante el procesamiento pueden excluirse del repositorio mediante `.gitignore`, manteniendo versionados los scripts y demás archivos necesarios para la reproducción del análisis.
+- Los resultados deben interpretarse considerando las definiciones, filtros, universos de estudio y factores de expansión utilizados en la publicación oficial del INEI.
+- Las diferencias respecto de los resultados publicados deben revisarse considerando la selección de variables, tratamiento de valores perdidos, criterios de inclusión y ponderadores utilizados.
 
 ## Licencia 📜
 
@@ -279,6 +246,7 @@ Este proyecto está licenciado bajo la Licencia MIT. Consulta el archivo [LICENS
 **Carlos Eduardo Torres García**
 
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?style=flat&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/carlo4-eduardo-torres-garcia/)
+
 [![X Twitter](https://img.shields.io/badge/Twitter-000000?style=flat&logo=x&logoColor=white)](https://x.com/Carlo4_Eduardo)
 
 [**⬆ Volver al inicio**](#a)
